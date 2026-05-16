@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Upload Detection</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800;900&display=swap"
+          rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="page-card">
+
+        <div class="badge">
+            Upload Detection Mode
+        </div>
+
+        <h1>Upload Face Image</h1>
+
+        <p>
+            Upload a clear human face image. The system will scan the face,
+            detect the emotion and recommend suitable content based on the
+            detected emotional state.
+        </p>
+
+        {% if error %}
+            <div class="error-box">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <form action="/detect" method="POST" enctype="multipart/form-data">
+
+            <input type="file" name="image" accept="image/*" required>
+
+            <br>
+
+            <button type="submit">
+                Detect Emotion
+            </button>
+
+        </form>
+
+        <br>
+
+        <a href="/">Back to Home</a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

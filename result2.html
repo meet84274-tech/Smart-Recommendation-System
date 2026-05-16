@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Prediction Result</title>
+
+</head>
+
+<body>
+
+    <h1>Prediction Result</h1>
+
+    <h2>
+        Emotion:
+        {{ emotion }}
+    </h2>
+
+    <h2>
+        Confidence:
+        {{ confidence }}%
+    </h2>
+
+    <h2>
+        Recommended Content:
+        {{ content }}
+    </h2>
+
+    <h3>Recommendations:</h3>
+
+    <ul>
+
+        {% for item in recommendations %}
+
+            <li>{{ item }}</li>
+
+        {% endfor %}
+
+    </ul>
+
+    <a href="/">
+        Go Back
+    </a>
+
+</body>
+</html>

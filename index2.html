@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Emotion Detection</title>
+
+</head>
+
+<body>
+
+    <h1>Emotion Detection System</h1>
+
+    <!-- ================================= -->
+    <!-- IMAGE UPLOAD -->
+    <!-- ================================= -->
+
+    <h2>Upload Image</h2>
+
+    <form
+        action="/predict_image"
+        method="POST"
+        enctype="multipart/form-data"
+    >
+
+        <input
+            type="file"
+            name="image"
+            required
+        >
+
+        <button type="submit">
+            Predict
+        </button>
+
+    </form>
+
+    <hr>
+
+    <!-- ================================= -->
+    <!-- WEBCAM -->
+    <!-- ================================= -->
+
+    <h2>Live Webcam Detection</h2>
+
+    <video
+        id="video"
+        width="500"
+        autoplay
+    ></video>
+
+    <br><br>
+
+    <button onclick="capture()">
+        Detect Emotion
+    </button>
+
+    <h3 id="result"></h3>
+
+    <!-- ================================= -->
+    <!-- JAVASCRIPT -->
+    <!-- ================================= -->
+
+    <script>
+
+        const video =
+            document.getElementById('video');
+
+        // Open webcam
+        navigator.mediaDevices.getUserMedia({
+            video: true
+        })
+
+        .then(function(stream) {
+
+            video.srcObject = stream;
+
+        })
+
+        .catch(function(error) {
+
+            console.log(error);
+
+            alert("Webcam access denied");
+
+        });
+
+        // Capture frame
+        function capture() {
+
+            let canvas =
+                document.createElement('canvas');
+
+            canvas.width = video.videoWidth;
+
+            canvas.height = video.videoHeight;
+
+            let ctx =
+                canvas.getContext('2d');
+
+            ctx.drawImage(
+                video,
+                0,
+                0
+            );
+
+            let image =
+                canvas.toDataURL('image/png');
+
+            // Send image to Flask
+            fetch('/predict_webcam', {
+
+                method: 'POST',
+
+                headers: {
+                    'Content-Type':
+                    'application/x-www-form-urlencoded'
+                },
+
+                body:
+                    'image=' +
+                    encodeURIComponent(image)
+
+            })
+
+            .then(response => response.json())
+
+            .then(data => {
+
+                // Error handling
+                if(data.error){
+
+                    document.getElementById(
+                        'result'
+                    ).innerHTML =
+                        "Error: " + data.error;
+
+                    return;
+                }
+
+                // Show result
+                document.getElementById(
+                    'result'
+                ).innerHTML =
+
+                    "Emotion: " +
+                    data.emotion +
+
+                    "<br><br>" +
+
+                    "Confidence: " +
+                    data.confidence +
+                    "%" +
+
+                    "<br><br>" +
+
+                    "Recommended Content: " +
+                    data.content;
+
+            })
+
+            .catch(error => {
+
+                console.log(error);
+
+            });
+
+        }
+
+    </script>
+
+</body>
+</html>

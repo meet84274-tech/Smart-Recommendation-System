@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Prediction Result</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        body{
+            overflow:hidden;
+        }
+
+        .result-page{
+            width:100%;
+            max-width:1350px;
+            height:88vh;
+            padding:22px;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+        }
+
+        .result-layout{
+            display:grid;
+            grid-template-columns: 1fr 420px;
+            gap:22px;
+            height:100%;
+            margin-top:10px;
+        }
+
+        /* =========================
+           LEFT SIDE
+        ========================= */
+
+        .analysis-panel{
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            padding:18px;
+            border-radius:26px;
+            background:rgba(255,255,255,0.06);
+            border:1px solid rgba(255,255,255,0.10);
+            backdrop-filter:blur(12px);
+        }
+
+        .analysis-top{
+            display:flex;
+            align-items:center;
+            gap:24px;
+        }
+
+        .result-image{
+            width:250px;
+            height:250px;
+            object-fit:cover;
+            border-radius:24px;
+            border:2px solid rgba(255,255,255,0.15);
+        }
+
+        .analysis-details{
+            flex:1;
+        }
+
+        .result-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:14px;
+        }
+
+        .result-item{
+            padding:16px;
+            border-radius:18px;
+            background:rgba(255,255,255,0.08);
+            border:1px solid rgba(255,255,255,0.08);
+        }
+
+        .result-item span{
+            display:block;
+            font-size:12px;
+            color:#9defff;
+            font-weight:800;
+            margin-bottom:7px;
+            text-transform:uppercase;
+            letter-spacing:0.6px;
+        }
+
+        .result-item strong{
+            font-size:22px;
+            color:white;
+        }
+
+        .recommendation-box{
+            margin-top:18px;
+            padding:20px;
+            border-radius:22px;
+            background:linear-gradient(
+                135deg,
+                rgba(0,255,255,0.12),
+                rgba(255,255,255,0.05)
+            );
+            border:1px solid rgba(255,255,255,0.10);
+        }
+
+        .recommendation-box span{
+            display:block;
+            color:#9defff;
+            font-size:12px;
+            font-weight:900;
+            text-transform:uppercase;
+            margin-bottom:8px;
+        }
+
+        .recommendation-box h2{
+            margin:0;
+            font-size:30px;
+            color:white;
+        }
+
+        .result-buttons{
+            display:flex;
+            gap:12px;
+            margin-top:20px;
+        }
+
+        .result-buttons a{
+            flex:1;
+            text-align:center;
+            padding:14px;
+            border-radius:14px;
+            text-decoration:none;
+            font-weight:700;
+            background:cyan;
+            color:black;
+        }
+
+        /* =========================
+           RIGHT SIDE
+        ========================= */
+
+        .recommendation-panel{
+            height:100%;
+            border-radius:26px;
+            background:rgba(255,255,255,0.06);
+            border:1px solid rgba(255,255,255,0.10);
+            backdrop-filter:blur(12px);
+            padding:18px;
+            display:flex;
+            flex-direction:column;
+            overflow:hidden;
+        }
+
+        .recommendation-panel h2{
+            margin-top:0;
+            margin-bottom:16px;
+            font-size:24px;
+            color:white;
+        }
+
+        .recommendation-scroll{
+            overflow-y:auto;
+            padding-right:6px;
+        }
+
+        .recommendation-scroll::-webkit-scrollbar{
+            width:6px;
+        }
+
+        .recommendation-scroll::-webkit-scrollbar-thumb{
+            background:rgba(0,255,255,0.5);
+            border-radius:10px;
+        }
+
+        .api-item{
+            padding:15px;
+            border-radius:18px;
+            margin-bottom:12px;
+            background:rgba(255,255,255,0.08);
+            border:1px solid rgba(255,255,255,0.08);
+        }
+
+        .api-item strong{
+            display:block;
+            color:white;
+            font-size:16px;
+            margin-bottom:6px;
+        }
+
+        .api-meta{
+            color:#9defff;
+            font-size:12px;
+            font-weight:800;
+            margin-bottom:7px;
+        }
+
+        .api-reason{
+            margin:0;
+            font-size:13px;
+            line-height:1.5;
+            color:#eef8ff;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media(max-width:1100px){
+
+            body{
+                overflow:auto;
+            }
+
+            .result-page{
+                height:auto;
+            }
+
+            .result-layout{
+                grid-template-columns:1fr;
+            }
+
+            .analysis-top{
+                flex-direction:column;
+            }
+
+            .result-image{
+                width:220px;
+                height:220px;
+            }
+
+            .recommendation-panel{
+                height:650px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="page-card result-page">
+
+        <div class="badge">
+            AI Prediction Complete
+        </div>
+
+        <h1>Emotion Result</h1>
+
+        <div class="result-layout">
+
+            <!-- LEFT SIDE -->
+
+            <div class="analysis-panel">
+
+                <div class="analysis-top">
+
+                    <img src="/{{ image }}"
+                         class="result-image">
+
+                    <div class="analysis-details">
+
+                        <div class="result-grid">
+
+                            <div class="result-item">
+                                <span>Emotion</span>
+                                <strong>{{ emotion }}</strong>
+                            </div>
+
+                            <div class="result-item">
+                                <span>Confidence</span>
+                                <strong>{{ confidence }}%</strong>
+                            </div>
+
+                            <div class="result-item">
+                                <span>Preference</span>
+                                <strong>{{ preference }}</strong>
+                            </div>
+
+                            <div class="result-item">
+                                <span>Time</span>
+                                <strong>{{ time_of_day }}</strong>
+                            </div>
+
+                        </div>
+
+                        <div class="recommendation-box">
+
+                            <span>ML Recommended Content</span>
+
+                            <h2>{{ recommendation }}</h2>
+
+                        </div>
+
+                        <div class="result-buttons">
+
+                            <a href="/">
+                                Home
+                            </a>
+
+                            <a href="/detect">
+                                Try Again
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT SIDE -->
+
+            <div class="recommendation-panel">
+
+                <h2>Personalized Recommendations</h2>
+
+                <div class="recommendation-scroll">
+
+                    {% for item in api_recommendations %}
+
+                        <div class="api-item">
+
+                            <strong>{{ item.title }}</strong>
+
+                            <div class="api-meta">
+                                {{ item.language }} · {{ item.content_type }}
+                            </div>
+
+                            <p class="api-reason">
+                                {{ item.reason }}
+                            </p>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

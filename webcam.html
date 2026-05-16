@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Webcam Detection</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800;900&display=swap"
+          rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="page-card">
+
+        <div class="badge">
+            Live AI Webcam Mode
+        </div>
+
+        <h1>Real-Time Emotion Scan</h1>
+
+        <p>
+            Position your face clearly inside the camera view. When ready, press any key
+            or use the capture button to take a selfie and generate a content recommendation.
+        </p>
+
+        {% if error %}
+            <div class="error-box">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <div class="webcam-frame">
+            <img src="{{ url_for('video_feed') }}" width="700">
+        </div>
+
+        <form id="captureForm" action="/capture" method="POST">
+            <button type="submit">
+                Capture & Predict
+            </button>
+        </form>
+
+        <p class="key-note">
+            Shortcut: Press any keyboard key to capture.
+        </p>
+
+        <a href="/" onclick="stopCamera()">Back to Home</a>
+
+    </div>
+
+</div>
+
+<script>
+    let captureStarted = false;
+
+    document.addEventListener("keydown", function() {
+        if (!captureStarted) {
+            captureStarted = true;
+            document.getElementById("captureForm").submit();
+        }
+    });
+
+    function stopCamera() {
+        navigator.sendBeacon("/stop_camera");
+    }
+
+    window.addEventListener("beforeunload", function() {
+        navigator.sendBeacon("/stop_camera");
+    });
+</script>
+
+</body>
+
+</html>

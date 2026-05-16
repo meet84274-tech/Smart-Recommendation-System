@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Emotion AI Recommender</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800;900&display=swap"
+          rel="stylesheet">
+</head>
+
+<body>
+
+<div class="hero-overlay">
+
+    <div class="hero-content">
+
+        <div class="badge">
+            Emotion AI · Smart Recommendation System
+        </div>
+
+        <h1>
+            Understand Emotion. <br>
+            Recommend Better Content.
+        </h1>
+
+        <p class="hero-text">
+            This AI-powered system detects human facial emotion using a Deep Learning CNN model
+            and delivers intelligent personalized content recommendations based on emotional state,
+            user interaction and real-time analysis.
+        </p>
+
+        <div class="feature-tags">
+            <span>Deep Learning CNN</span>
+            <span>OpenCV Face Analysis</span>
+            <span>Flask Web App</span>
+            <span>Machine Learning Recommendation</span>
+        </div>
+
+        <div class="buttons">
+
+            <a href="/webcam">
+                Start Live Detection
+            </a>
+
+            <a href="/detect" class="secondary-btn">
+                Upload Image
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
