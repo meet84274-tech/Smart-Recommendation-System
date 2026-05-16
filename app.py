@@ -20,7 +20,7 @@ captured_frame = None
 # =========================
 
 client = Groq(
-    api_key="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"
+    api_key="Your api key"
 )
 
 # =========================
